@@ -1,1 +1,0 @@
-wget "http://xyzcomics.com/wp-content/uploads/2020/05/redux-12.jpg" -outfile "redux-12.jpg"
