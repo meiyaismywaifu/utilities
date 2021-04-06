@@ -20,7 +20,7 @@ Find an internet directory where all the files you want start with the same name
 
 Run [main.rb].
 
-It will ask you for a URL, a start number, and an end number.
+It will ask you for a URL, a start number, and an end number. Confirmation message of inputs. Confirm to execute, anything else to re-enter, CTRL+C exit.
 
 URL is preferably the first file. I have found that numbering conventions I can think of follow this logic:
 
@@ -29,3 +29,5 @@ URL is preferably the first file. I have found that numbering conventions I can 
 I have seen 0, 1..99, 100. I have not ever seen 00, 01..99, 100; if there's padding it always fits the same length. There's also never a 0, 01..099, 0100, for example. In other words, format of lowest number predicts higher numbers. As this ruby script is a guesser-generator and not a scraper, giving it the lowest number is a good idea.
 
 No need to pad the other inputs. If it starts at 001 and goes to 099, you can type "1" and "99."
+
+.ps1 file is generated in same directory.
