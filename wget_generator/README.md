@@ -1,3 +1,5 @@
+# Wget Generator
+
 **Description:**
 
 ruby generates a powershell file of [wget]s.
@@ -31,3 +33,8 @@ I have seen 0, 1..99, 100. I have not ever seen 00, 01..99, 100; if there's padd
 No need to pad the other inputs. If it starts at 001 and goes to 099, you can type "1" and "99."
 
 .ps1 file is generated in same directory.
+
+**Author System Environment:**
+
+generator script run in Ruby 2.7.2.
+output script run in Powershell 5.1.19041.1.
