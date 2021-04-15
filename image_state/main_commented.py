@@ -1,5 +1,5 @@
-import os
 import psutil
+import time
 from datetime import datetime
 
 # retrieves all open files in Honeyview, creates script that opens said files upon execution.
@@ -68,12 +68,22 @@ def script_generator2(filelist):
              'input("Execution complete. Press enter to exit.")')
    return script
 
+def readout(file_list):
+   console = "detected:\n"
+   console += "\n".join(file_list) + "\n"
+   console += "window will close shortly..."
+   return console
+
 # execution
 process_list = processes("Honeyview.exe")
 if len(process_list) == 0:
-   "do nothing" # apparently i can't put a #'d comment, it has to be this.
+   print("no honeyview windows detected. window will close shortly...")
+   time.sleep(3)
+   # if empty, have to put a string or something in it, python doesn't allow comment-only conditions
 else:
    file_list = files(process_list)
-   time = time_to_string()
+   print(readout(file_list))
+   name = time_to_string()
    output = script_generator2(file_list)
-   write(time, output)
+   write(name, output)
+   time.sleep(5)

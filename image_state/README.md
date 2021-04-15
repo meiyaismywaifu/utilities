@@ -38,7 +38,7 @@ If a name/path turns up, you're in luck. Find the exact name of the process [p.n
 
 **Author System Environment:**
 
-generator and output scripts run in Python 3.9.4 on Windows 10. this script uses [[os.startfile()](https://docs.python.org/3/library/os.html#os.startfile)].
-Honeyview 5.18.
-requires [[psutil](https://pypi.org/project/psutil/)].
+- Python 3.9.4 on Windows 10. this script uses [[os.startfile()](https://docs.python.org/3/library/os.html#os.startfile)].
+- [[psutil](https://pypi.org/project/psutil/)] 5.8.0.
+- Honeyview 5.18.
 
