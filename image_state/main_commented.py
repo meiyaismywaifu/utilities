@@ -4,6 +4,8 @@ import time
 from datetime import datetime
 from urllib.parse import unquote
 
+import windows2
+
 # retrieves all open explorer windows and all open files in Honeyview, creates script that opens said files upon execution.
 
 # retrieve all processes
@@ -45,9 +47,9 @@ def write(filename, string):
    f.close()
    return
 
-# retrieves all explorer windows
+# retrieves all explorer windows. superseded by windows2().
 # reference [ancient_artifact_of_great_power.py], written in 2003 and in python 2.
-# no intput, list of strings output.
+# no input, list of strings output.
 def windows():
    clsid='{9BA05972-F6A8-11CF-A442-00A0C90A8F39}' # explorer's designation in COM or something
    ShellWindows=win32com.client.Dispatch(clsid)
@@ -68,8 +70,8 @@ def script_generator1(filelist):
       text += line
    return text
 
-# creates opener script
-# list of strings input, string output
+# creates opener script. here for record purposes only.
+# list of strings input, string output.
 def script_generator2(filelist):
    script = ("# -*- coding: UTF-8 -*-\n"
              "import os\n\n"
@@ -86,28 +88,66 @@ def script_generator2(filelist):
              'input("Execution complete. Press enter to exit.")')
    return script
 
+
+# creates opener script. here for record purposes only.
+# three lists as input, string output.
+def script_generator3(window_list, selected_list, file_list):
+   script = ("# -*- coding: UTF-8 -*-\n"
+             "import os\n"
+             "import subprocess\n"
+             "import time\n\n"
+
+             f'wls = {window_list}\n'
+             f'sls = {selected_list}\n'
+             f"fls = {file_list}\n\n"
+
+             "print('Opening')\n"
+             "print('in explorer: --- --- ---')\n"
+             "for f in wls: print(f)\n"
+             "print('selected in explorer: --- --- ---')\n"
+             "for f in sls: print(f)\n"
+             "print('in Honeyview: --- --- ---')\n"
+             "for f in fls: print(f)\n"
+             "print('--- --- --- --- --- ---')\n\n"
+
+             "for file in sls:\n"
+             "   try: subprocess.run(f'explorer /select, \"{file}\"'); time.sleep(3)\n" # without a forced delay it opens correct directories but fails to select the files at a high rate. [run] is supposedly already a block and does not execute the next command until it's complete. 3s seems to be the right delay.
+             "   except: print(f'failed to open explorer on: {file}')\n\n"
+ 
+             "def stdopen(filelist):\n"
+             "   for file in filelist:\n"
+             "      try: os.startfile(file)\n"
+             "      except: print(f'failed to open: {file}')\n"
+             "stdopen(wls)\n"
+             "stdopen(fls)\n\n"
+
+             'input("Execution complete. Press enter to exit.")\n')
+   return script
+
 # console output during creation
-# two strings as input, string output.
-def readout(explorer_list,file_list):
-   console = "detected explorer windows:\n--- --- ---\n"
-   console += "\n".join(explorer_list) + "\n--- --- ---\n"
-   console += "detected honeyview files:\n--- --- ---\n"
-   console += "\n".join(file_list) + "\n--- --- ---\n"
-   console += "window will close shortly..."
-   return console
+# two strings as input, no output.
+def readout(window_list, selected_list, file_list):
+   print("detected empty windows:\n--- --- ---")
+   print("\n".join(window_list) + "\n--- --- ---")
+   print("detected selected files:\n--- --- ---")
+   print( "\n".join(selected_list) + "\n--- --- ---")
+   print("detected honeyview files:\n--- --- ---")
+   print("\n".join(file_list) + "\n--- --- ---")
+   print("window will close shortly...")
+   return
 
 # execution
 process_list = processes("Honeyview.exe")
-explorer_list = windows()
-if len(explorer_list) == 0 & len(process_list) == 0:
+efl = windows2.get_explorer_files()
+window_list = efl[0]; selected_list = efl[1]
+if len(window_list) == 0 and len(selected_list) == 0 and len(process_list) == 0:
    print("no explorer or honeyview windows detected. window will close shortly...")
    time.sleep(3)
    # if empty, have to put a string or something in it, python doesn't allow comment-only conditions
 else:
    file_list = files(process_list)
-   print(readout(explorer_list,file_list))
-   save_list = explorer_list + file_list
+   readout(window_list, selected_list, file_list)
+   output = script_generator3(window_list, selected_list, file_list)
    name = time_to_string()
-   output = script_generator2(save_list)
    write(name, output)
    time.sleep(5)

@@ -216,5 +216,102 @@ print("Hello world")
     # error doesn't work the way i want it to but the retrieval works....
     # search term for above was "python win32com windows explorer methods".
 
+    # trying to copy and paste these names into microsoft docs and they return garbage.
 
-    
+    # trying to add condition to given to return empty instead of error if nothing selected. can't convert to ls/for in the existing way.
+    # appears the error is upstream of this. oh, the entire thing is a for loop.
+
+# ls = ["a","s","d","f","g"]
+# for idx, val in enumerate(ls):
+#     print(idx, val)
+    # for with index
+    # hmm... need map...
+    # but map returns a map instead of a list, how irritating.
+
+# vec = [2, 4, 6]
+# vec = [3*x for x in vec]
+# print(vec)
+    # i see.
+
+# i was gonna write down something but i seem to have gotten around it. not sure what didn't work? it had to do with something not parsing \\'s. it seems \\'s is the output of the new script too and can be read just fine by subprocess so there is no problem here.
+
+# print('Opening the following files')
+# print('in explorer:')
+# for file in explorer_list
+#     print(file)
+# print('in Honeyview:')
+# for file in filelist:
+#    print(file)
+# print('--- --- --- --- --- ---')
+
+# for file in explorer_list
+#     try:
+#         subprocess.Popen(f'explorer /select, "{file}"')
+#         'temp empty'
+#     except:
+#         print(f'failed to open: {file}')
+
+# for file in filelist:
+#     try:
+#         os.startfile(file)
+#         'temp empty'
+#     except:
+#         print(f'failed to open: {file}')
+# input("Execution complete. Press enter to exit.")
+    # i think this is the new format
+    # oh but wait, there's windows with selected and unselected items...
+
+# the if statement at the end triggered on first condition.
+# apparently [&] and [and] aren't the same. why? actually i don't care.
+
+# a = 5; b = "asdasdasd"
+# print(f"{a} + {b}")
+
+# a = ["a","s","g","h"]
+# for i in a : print(a)
+
+# print('Opening')
+# print('in explorer: --- --- ---')
+# for f in wls: print(f)
+# print('files in explorer: --- --- ---')
+# for f in sls: print(f)
+# print('in Honeyview: --- --- ---')
+# for f in fls: print(f)
+# print('--- --- --- --- --- ---')
+
+# for file in sls:
+#    try:
+#       subprocess.Popen(f'explorer /select, "{file}"')
+#    except:
+#       print(f'failed to open explorer on: {file}')
+
+# def stdopen(filelist):
+#    for file in filelist:
+#       try:
+#          os.startfile(file)
+#       except:
+#          print(f'failed to open: {file}')
+# stdopen(wls)
+# stdopen(fls)
+
+# input("Execution complete. Press enter to exit.")
+    # i forgot to import subprocess.
+
+
+# the first time it worked, one of the selected files wasn't selected. i couldn't reproduce it again.
+
+# oh it happened again.
+# and it's not happening again. hmmmmmmmmm
+# can i make everything wait until each popen is done?
+
+# [https://stackoverflow.com/questions/2837214/python-popen-command-wait-until-the-command-is-finished]
+# apparently [subprocess.call] in place of [subprocess.Popen] does this.
+# apparently [subprocess.run] supersedes [.call]. "Run the command described by args. Wait for command to complete, then return a CompletedProcess instance."
+# guy here says "While subprocess is preferred in many answers, it cannot handle space and quota within command very well. The above answer does not directly solve the os.popen question.". i dunno what this means though.
+# we'll see if this problem happens again i suppose. [Popen] certainly doesn't say it waits for the command to complete while these other two do.
+# there is a "queue" and something about "threading". look into that next if it happens again. im not sure why it would work, [subprocess] is in a for loop that comes first and the rest shouldn't run until it's finished, but that's in the vicinity.
+
+# k didn't stop it... hmm. what if i reverse the order?
+# nope... clogs even if it's by itself.
+# stops clogging with sufficient sleep. which for 9 folders appears to be 3 seconds. that's uhhhhhhhhhhhhhh retarded.
+# well, i guess it is literally retarded, i.e. "slow", "lagging".

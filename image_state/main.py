@@ -4,6 +4,8 @@ import time
 from datetime import datetime
 from urllib.parse import unquote
 
+import windows2
+
 # retrieves all open explorer windows and all open files in Honeyview, creates script that opens said files upon execution.
 
 def processes(name):
@@ -44,41 +46,60 @@ def windows():
       ls.append(location)
    return ls
 
-def script_generator2(filelist):
+def script_generator3(window_list, selected_list, file_list):
    script = ("# -*- coding: UTF-8 -*-\n"
-             "import os\n\n"
-             f"filelist = {filelist}\n\n"
-             "print('Opening the following files:')\n"
-             "for file in filelist:\n"
-             "   print(file)\n"
+             "import os\n"
+             "import subprocess\n"
+             "import time\n\n"
+
+             f'wls = {window_list}\n'
+             f'sls = {selected_list}\n'
+             f"fls = {file_list}\n\n"
+
+             "print('Opening')\n"
+             "print('in explorer: --- --- ---')\n"
+             "for f in wls: print(f)\n"
+             "print('selected in explorer: --- --- ---')\n"
+             "for f in sls: print(f)\n"
+             "print('in Honeyview: --- --- ---')\n"
+             "for f in fls: print(f)\n"
              "print('--- --- --- --- --- ---')\n\n"
-             "for file in filelist:\n"
-             "   try:\n"
-             "      os.startfile(file)\n"
-             "   except:\n"
-             "      print(f'failed to open: {file}')\n"
-             'input("Execution complete. Press enter to exit.")')
+
+             "for file in sls:\n"
+             "   try: subprocess.run(f'explorer /select, \"{file}\"'); time.sleep(3)\n"
+             "   except: print(f'failed to open explorer on: {file}')\n\n"
+ 
+             "def stdopen(filelist):\n"
+             "   for file in filelist:\n"
+             "      try: os.startfile(file)\n"
+             "      except: print(f'failed to open: {file}')\n"
+             "stdopen(wls)\n"
+             "stdopen(fls)\n\n"
+
+             'input("Execution complete. Press enter to exit.")\n')
    return script
 
-def readout(explorer_list,file_list):
-   console = "detected explorer windows:\n--- --- ---\n"
-   console += "\n".join(explorer_list) + "\n--- --- ---\n"
-   console += "detected honeyview files:\n--- --- ---\n"
-   console += "\n".join(file_list) + "\n--- --- ---\n"
-   console += "window will close shortly..."
-   return console
+def readout(window_list, selected_list, file_list):
+   print("detected empty windows:\n--- --- ---")
+   print("\n".join(window_list) + "\n--- --- ---")
+   print("detected selected files:\n--- --- ---")
+   print( "\n".join(selected_list) + "\n--- --- ---")
+   print("detected honeyview files:\n--- --- ---")
+   print("\n".join(file_list) + "\n--- --- ---")
+   print("window will close shortly...")
+   return
 
 # execution
 process_list = processes("Honeyview.exe")
-explorer_list = windows()
-if len(explorer_list) == 0 & len(process_list) == 0:
+efl = windows2.get_explorer_files()
+window_list = efl[0]; selected_list = efl[1]
+if len(window_list) == 0 and len(selected_list) == 0 and len(process_list) == 0:
    print("no explorer or honeyview windows detected. window will close shortly...")
    time.sleep(3)
 else:
    file_list = files(process_list)
-   print(readout(explorer_list,file_list))
-   # save_list = explorer_list + file_list
-   # name = time_to_string()
-   # output = script_generator2(save_list)
-   # write(name, output)
+   readout(window_list, selected_list, file_list)
+   output = script_generator3(window_list, selected_list, file_list)
+   name = time_to_string()
+   write(name, output)
    time.sleep(5)

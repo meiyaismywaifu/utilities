@@ -2,9 +2,11 @@
 
 **Description:**
 
-retrieves all open files in Honeyview, creates script that opens said files on execution.
+retrieves all open Explorer windows, all Explorer windows with files selected, all open files in Honeyview, and creates script that reopens them on execution.
 
 **History:**
+
+###### 21_04_13
 
 i usually have a bunch of images open. i want to close them about as much as i want to close browser tabs. sometimes i have to/end up closing them. more often, windows explorer decides it's time to die and i lose my stuff. in any case i wanted a way to go back to where i was. ideally, it would be a bookmark system, except on the desktop. something that opened images and folders.
 
@@ -20,9 +22,23 @@ considered making a folder of shortcuts versus a script. i thought it would be n
 
 well, i still think it would be nice. maybe some other time.
 
+###### 21_04_17
+
+now retrieves explorer windows. and explorer windows with files selected.
+
+by two entirely different paths. copied from two (probably) entirely different people with a difference in more than 10 years (2003 and 2017). well, they might not be that different. but i think i don't want to find out.
+
+the second guy wrote python but said he's from C++, and linked to documentation for the relevant API. or so he said. i have no idea how to read it. these methods he called, are they in python library documentation or windows shell documentation? i searched both at multiple points and found nothing. even without looking for anything in particular these docs are non-navigable. search does not help either. pick up a method name from the docs themselves, give it to search, i cannot find my way back. do people really read this stuff and learn new things? do people really use help() and dir() or whatever and that's all they need? i don't believe it for a second. how else would they do it? i have no idea.
+
+the concept of reading official documentation for application programming interfaces so you can program your application to this and that interface is beautiful. the actual implementation of this is uhhhhhh fucking trash. and searching google instead is fishing in a sea of trash. which as it turns out is better, because sometimes you actually catch some fish. but i'd rather not be there in the first place. because it sucks.
+
+why am i here again? oh yeah, to try and make it suck a bit less.
+
+well, it makes sense that things that suck are made via paths that suck. which are made by p-
+
 **Format/Usage/Notes:**
 
-Running generator script while at least one Honeyview instance is open will generate a script in its own directory. Running generator script while no Honeyview instances are open will generate nothing.
+Running generator script while at least one Explorer or Honeyview instance is open will generate a script in its own directory. Running generator script while no instances are open will generate nothing.
 
 Output script can be moved and renamed.
 
@@ -34,11 +50,14 @@ print(p.open_files())
 print(p.as_dict())
 ```
 
-If a name/path turns up, you're in luck. Find the exact name of the process [p.name()] and replace it in line 51. If the name/path is in [open_files()] or elsewhere with a bunch of junk, it'll have to be filtered. If there is no junk and the filename-path is in position 1 of [.cmdline()[]], then hopefully, that's all you need to do.
+If a name/path turns up, you're in luck. Find the exact name of the process [p.name()] and replace it on line 51. If the name/path is in [open_files()] or elsewhere with a bunch of junk, it'll have to be filtered. If there is no junk and the filename-path is in position 1 of [.cmdline()[]], then hopefully, that's all you need to do.
+
+On line 69 there exists [time.sleep(3)]. This is the delay I've found that reliably re-opens Explorer at the selected files. Lower values cause the folders to be opened without selection. The process is already a block so it shouldn't be starting the next one until it's complete. But this is what I've found necessary.
 
 **Author System Environment:**
 
-- Python 3.9.4 on Windows 10. this script uses [[os.startfile()](https://docs.python.org/3/library/os.html#os.startfile)].
+- Python 3.9.4 on Windows 10.
 - [[psutil](https://pypi.org/project/psutil/)] 5.8.0.
+- [[pywin32](https://github.com/mhammond/pywin32)] 300.
 - Honeyview 5.18.
 
