@@ -54,9 +54,14 @@ If a name/path turns up, you're in luck. Find the exact name of the process [p.n
 
 On line 69 there exists [time.sleep(3)]. This is the delay I've found that reliably re-opens Explorer at the selected files. Lower values cause the folders to be opened without selection. The process is already a block so it shouldn't be starting the next one until it's complete. But this is what I've found necessary.
 
+---- on Windows 10. On Windows 7 everything opens instantly. Even the Honeyviews.
+
+Why am I on Windows 10 again?
+
 **Author System Environment:**
 
 - Python 3.9.4 on Windows 10.
+- Python 3.8.8 on WIndows 7.
 - [[psutil](https://pypi.org/project/psutil/)] 5.8.0.
 - [[pywin32](https://github.com/mhammond/pywin32)] 300.
 - Honeyview 5.18.
