@@ -132,3 +132,89 @@ print("Hello world")
 #          "  does this work?\n"
 #          "     would be interesting if it does\n")
     # that's better.
+
+
+
+### 21_04_17 (above was 21_04_13)
+    # https://mail.python.org/pipermail/python-list/2003-August/175691.html
+    # "FOUND! how to attach to running instances of Internet Explorer"
+# import win32com.client
+# # look in the makepy output for IE for the "CLSIDToClassMap"
+# # dictionary, and find the entry for "ShellWindows"
+# clsid='{9BA05972-F6A8-11CF-A442-00A0C90A8F39}'
+# ShellWindows=win32com.client.Dispatch(clsid)
+# for i in range(ShellWindows.Count):
+#     print i
+#     # this is the titlebar value
+#     print ShellWindows[i].LocationName
+#     # this is the current URL
+#     print ShellWindows[i].LocationURL
+#     print
+    # this works after changing [print thing] to [print(thing)], presumably this is python 2 instead of python 3. that means this is on a Aug 02 before 2008. oh the time is on there. it's 03_08_02. what a strange time format.
+    # it prints a URL and not a filepath.
+# win32com.client has no available documentation.
+    # [http://timgolden.me.uk/pywin32-docs/html/com/win32com/HTML/docindex.html]
+    # [http://timgolden.me.uk/pywin32-docs/html/com/win32com/readme.htm]
+# these don't tell me anything. like they're sparse garbage already they literally don't have a listing for win32com even though there's a lot of other win32xxx's, and then the stuff on win32com has literally no methods or nowhere to look for methods.
+# specifically i want to retrieve a filepath if possible instead of a URL and then convert it back.
+# some search says [dir] and [help] help. latter seems to be explanations, former a list. using it on [ShellWindows] object i expect to see a list that includes LocationName and LocationURL. neither of these appear. python does some things in reverse from ruby, that might be it.
+# it is possible it does not exist. this guy from 2003, along with the other supposed (could not test myself) solutions ive found in Powershell and C#, all call this "9BA05972-F6A8-11CF-A442-00A0C90A8F39" thing. the objective is always "retrieve explorer filepaths" and the solution is always "do it through this thing with internet explorer". spec: bigger people than me could not find it if it does exist.
+    # what does exist is a python library that parses URL to string.
+# from urllib.parse import unquote
+# unquote(url)
+
+# import win32com.client
+# from urllib.parse import unquote
+# clsid='{9BA05972-F6A8-11CF-A442-00A0C90A8F39}'
+# ShellWindows=win32com.client.Dispatch(clsid)
+# ls = []
+# for i in range(ShellWindows.Count):
+#    LURL = ShellWindows[i].LocationURL
+#    location = unquote(LURL[8:])
+#    ls.append(location)
+# print(ls)
+    # testing redacted cause can't care to clean out the examples.
+
+# UnicodeEncodeError: 'charmap' codec can't encode characters in position 519-520: character maps to <undefined>
+    # presumably this is the japanese characters.
+    # and then afterwards have to set encoding in the file. i suppose it makes sense.
+
+# import subprocess
+# subprocess.Popen(r'explorer /select,"C:\path\of\folder\file"')
+    # this opens explorer on given file.
+    # how do we get the current selected file?
+
+# import win32com.client
+# import pythoncom
+
+# ProgID = "someProgramID"
+# com_object = win32com.client.Dispatch(ProgID)
+
+# for key in dir(com_object):
+#     method = getattr(com_object,key)
+#     if str(type(method)) == "<type 'instance'>":
+#         print(key)
+#         for sub_method in dir(method):
+#             if not sub_method.startswith("_") and not "clsid" in sub_method.lower():
+#                 print("\t"+sub_method)
+#     else:
+#         print("\t",method)
+    # [https://stackoverflow.com/questions/27370768/list-all-methods-in-comobject]
+    # this is the same as [help()] except with a lot more garbage.
+    # how do we get available fucking methods
+
+# [https://stackoverflow.com/questions/43949747/return-a-list-of-all-files-from-the-selected-explorer-window-with-pywin32]
+    # hey this guy is like me
+# "You are relying on implementation details. Don't. Use the API."
+    # AND HOW DO I FUCKIN DO THAT BR0
+# "The shell has a dedicated COM API [https://msdn.microsoft.com/en-us/library/windows/desktop/bb773177(v=vs.85).aspx] for things like this, which can be accessed through pywin32."
+    # what does this mean? anything in there can be called?
+    # what do i import in order to call it?
+    # the example script here does something, but not the thing that actually answers the question; seems to have returned every single file in every single folder instead.
+    
+    # oh there's a setting at the bottom that is set to False. setting it to True actually retrieves it. wao!
+    # error doesn't work the way i want it to but the retrieval works....
+    # search term for above was "python win32com windows explorer methods".
+
+
+    
