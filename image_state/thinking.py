@@ -315,3 +315,35 @@ print("Hello world")
 # nope... clogs even if it's by itself.
 # stops clogging with sufficient sleep. which for 9 folders appears to be 3 seconds. that's uhhhhhhhhhhhhhh retarded.
 # well, i guess it is literally retarded, i.e. "slow", "lagging".
+
+
+### 21_04_19
+# p = os.getcwd()
+# y = r"I:\cwd\thinking.py"
+# print(p in y)
+    # returns true if p is detected in y. there is also .find() which takes args for indexes but not relevant to us.
+    # hmm.. excluding own file's cwd isn't right. it should be only if it is selected.
+
+    # apparently there's a distinction between cwd and dir where file is. i... suppose this is true.
+# dir_path = os.path.dirname(os.path.realpath(__file__))
+# dir_path = __file__
+# print(dir_path)
+    # it exists as a constant. how nice.
+    # [https://note.nkmk.me/en/python-script-file-path/]
+        # In Python 3.8 and earlier, __file__ returns the path specified when executing the python (or python3) command. If you specify a relative path, a relative path is returned. If you specify an absolute path, an absolute path is returned.
+
+        # In Python 3.9 and later, __file__ always returns an absolute path, regardless of whether the path specified with the python command is relative or absolute.
+    # presumably it includes the [filename.py] either way so that's sufficient for our purposes.
+# p = "complicated thing"
+# y = "complicated thing"
+# print(p in y)
+    # ok then.
+
+# match = "a"
+# list = ["d","s","a","s","d","s","f","a"]
+# def filter_self(list):
+#     list = [i for i in list if not i == match]
+#     return list
+# list = filter_self(list)
+# print(list)
+    # well that was easy. this is good civilzation.

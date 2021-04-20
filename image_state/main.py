@@ -46,6 +46,10 @@ def windows():
       ls.append(location)
    return ls
 
+def filter_self(list):
+    list = [i for i in list if not i == __file__]
+    return list
+
 def script_generator3(window_list, selected_list, file_list):
    script = ("# -*- coding: UTF-8 -*-\n"
              "import os\n"
@@ -92,14 +96,14 @@ def readout(window_list, selected_list, file_list):
 # execution
 process_list = processes("Honeyview.exe")
 efl = windows2.get_explorer_files()
-window_list = efl[0]; selected_list = efl[1]
+window_list = efl[0]; selected_list = filter_self(efl[1])
 if len(window_list) == 0 and len(selected_list) == 0 and len(process_list) == 0:
    print("no explorer or honeyview windows detected. window will close shortly...")
    time.sleep(3)
 else:
    file_list = files(process_list)
    readout(window_list, selected_list, file_list)
-   output = script_generator3(window_list, selected_list, file_list)
-   name = time_to_string()
-   write(name, output)
+   # output = script_generator3(window_list, selected_list, file_list)
+   # name = time_to_string()
+   # write(name, output)
    time.sleep(5)
