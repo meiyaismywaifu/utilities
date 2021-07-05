@@ -103,7 +103,7 @@ if len(window_list) == 0 and len(selected_list) == 0 and len(process_list) == 0:
 else:
    file_list = files(process_list)
    readout(window_list, selected_list, file_list)
-   # output = script_generator3(window_list, selected_list, file_list)
-   # name = time_to_string()
-   # write(name, output)
+   output = script_generator3(window_list, selected_list, file_list)
+   name = time_to_string()
+   write(name, output)
    time.sleep(5)
